@@ -1,34 +1,7 @@
 # customizer-builder
 A wrapper for $wp_customize that makes working with the WordPress customizer easier
 
-##Usage
-
-####Panels and sections
-There are 3 functions for working with panels and sections
-```php
-    $CB = new CustomizerBuilder( $wp_customize );    
-    $CB->newPanel( "Name", "Title" );
-    $CB->newSection( "Name", "Title" );    
-    $CB->addSection( "Name", "Title" );
-```
-
-**newPanel** created a new panel, and sets it as the current panel
-
-**newSection** created a new section, and sets it as the current section (it is NOT added to the current panel)
-
-**addSection** created a new section, adds it to the current panel, and sets it as the current section
-
-####Adding controls to sections
-Controls are always added to the current section
-
-
-####Priority
-Controls will appear in the order they are added in the code. CB has a priority counter that starts at 1000, and is incremented whenever a panel, section or control is added.
-
-
-
-
-##Example
+##Code example
 
 Always use the CustomizerBuilder inside the **customize_register** hook
 
@@ -70,3 +43,28 @@ $title = get_theme_mod("homepage_title");
 $subtitle = get_theme_mod("homepage_subtitle");
 $quote = get_theme_mod("homepage_quote");
 ```
+
+
+##Docs
+
+###Panels and sections
+There are 3 functions for working with panels and sections
+```php
+    $CB = new CustomizerBuilder( $wp_customize );    
+    $CB->newPanel( "Name", "Title" );
+    $CB->newSection( "Name", "Title" );    
+    $CB->addSection( "Name", "Title" );
+```
+
+**newPanel** created a new panel, and sets it as the current panel
+
+**newSection** created a new section, and sets it as the current section (it is NOT added to the current panel)
+
+**addSection** created a new section, adds it to the current panel, and sets it as the current section
+
+###Adding controls to sections
+Controls are always added to the current section
+
+
+###Priority
+Controls will appear in the order they are added in the code. CB has a priority counter that starts at 1000, and is incremented whenever a panel, section or control is added
