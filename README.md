@@ -1,9 +1,9 @@
-# customizer-builder
+# WordPress Customizer Builder
 A wrapper for $wp_customize that makes working with the WordPress customizer easier
 
-##Code example
+##Docs
 
-Always use the CustomizerBuilder inside the **customize_register** hook
+Always use the CustomizerBuilder (CB) inside the **customize_register** hook. This is the same place you normally register controls to the customizer. This hook is only used when opening the customizer in the WordPress backoffice, and will therefor not affect the performance of your website.
 
 ```php
 
@@ -11,60 +11,82 @@ function CB_customize_register( $wp_customize )
 {
     require 'customizer-builder.php';
     $CB = new CustomizerBuilder( $wp_customize );
-    
-    
-    $CB->newPanel("first_panel", "First Panel");
-    
-        $CB->addSection("p1_section_one", "Panel 1, Section 1");
-            
-            $CB->addTextbox( "homepage_title", "Homepage title");
-            $CB->addTextbox( "homepage_subtitle", "Homepage subtitle");
-            $CB->addTextbox( "homepage_quote", "Homepage quote");
-            
-        $CB->addSection("p1_section_two", "Panel 1, Section 2");
         
-            $CB->addImageUrl("test_image1_url", "Banner image")->Description("This returns an URL");
-            $CB->addImageID("test_image2_id", "Different image")->Description("This returns an ID, useful for responsive images");
-            $CB->addTextarea("textarea1", "This is a textarea");
-            
-            
-    $CB->newSection("section_3", "No panel, Section 3");
-    
-        $CB->addNote("<hr>This is a note", "useful for reminding people about <b>stuff</b>");
-        $CB->addCheckbox("charlie", "Did you remember the stuff?")->DefaultValue(true);
-        
+    //todo: add panels, sections and controls...    
 }
 add_action( 'customize_register', 'CB_customize_register' );
 ```
 
-The rest of the code stays the same, to get your values, just use:
-```php
-$title = get_theme_mod("homepage_title");
-$subtitle = get_theme_mod("homepage_subtitle");
-$quote = get_theme_mod("homepage_quote");
-```
-
-
-##Docs
-
 ###Panels and sections
-There are 3 functions for working with panels and sections
+
+Sections can be (but don't have to be) inside a panel. When creating a new panel using ```$CB->newPanel```, it is set as the **current panel** inside the CB. Adding new sections to this panel is done using ```$CB->addSection```. This function will always **add** a new section to the current panel. Creating a panel, and adding sections to it works like this:
+
 ```php
-    $CB = new CustomizerBuilder( $wp_customize );    
-    $CB->newPanel( "Name", "Title" );
-    $CB->newSection( "Name", "Title" );    
-    $CB->addSection( "Name", "Title" );
+$CB->newPanel("first_panel", "First Panel");
+    
+    $CB->addSection("section_one", "Panel 1, Section 1");            
+        // todo: add controls to this section...
+            
+    $CB->addSection("section_two", "Panel 1, Section 2");
+        // todo: add controls to this section...
 ```
 
-**newPanel** created a new panel, and sets it as the current panel
+Creating a section that isn't inside a panel is done using ```$CB->newSection```, like this:
 
-**newSection** created a new section, and sets it as the current section (it is NOT added to the current panel)
-
-**addSection** created a new section, adds it to the current panel, and sets it as the current section
+```php
+$CB->newSection("section_3", "No panel, Section 3");
+    // todo: add controls to this section...
+```
 
 ###Adding controls to sections
-Controls are always added to the current section
+
+Customizer controls are always added to sections. The section that is created last (either using ```$CB->newSection``` or ```$CB->addSection```) is set as the **current section** inside the CB. Controls are always added to the current section.
+
+```php
+$CB->newSection("section_3", "No panel, Section 3");
+    $CB->addTextbox("homepage_title", "This is the label for the homepage title control");
+    $CB->addImageUrl("test_image1_url", "Banner image");
+    $CB->addImageID("test_image2_id", "Different image");
+    $CB->addTextarea("textarea1", "This is a textarea");
+```
 
 
-###Priority
-Controls will appear in the order they are added in the code. CB has a priority counter that starts at 1000, and is incremented whenever a panel, section or control is added
+###Using the values
+The CB only changes the way controls are added to the customizer, it doesn't change the way you use the values. Just like always, you can retrieve the stored values like this:
+```php
+$title = get_theme_mod("homepage_title");
+$imgUrl = get_theme_mod("test_image1_url");
+$imgID = get_theme_mod("test_image2_id");
+$textareaText = get_theme_mod("textarea1");
+```
+
+###Adding arguments to controls
+In an attempt to keep registering controls are simple and readable as possible, arguments to controls are added in the following way:
+```php
+$CB->addTextbox("name", "label textbox")->DefaultValue("this is the default value");
+$CB->addImageID("name2", "label image")->Description("This returns an ID, useful for responsive images");
+```
+These argument functions are always added to the last added control.
+
+---
+##Available controls and arguments
+The following controls are currently available:
+```php
+$CB->addNumber( name, label );
+$CB->addNote($label, $content = "" ); // for writing instructions or reminders inside the customizer
+$CB->addTextarea( $name, $label, $allowHTML = false );
+$CB->addImageID( $name, $label );
+$CB->addImageUrl( $name, $label );
+$CB->addCheckbox( $name, $label );
+$CB->addUrl( $name, $label );
+$CB->addTextbox( $name, $label, $allowHTML = false );
+```
+The following functions for adding arguments to controls are available:
+```php
+$CB->Description( $string );
+$CB->DefaultValue( $string );
+$CB->Transport( $string );
+$CB->Capability( $string );
+$CB->SanitizeCallback( $string );
+```
+
