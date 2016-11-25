@@ -65,13 +65,18 @@ In an attempt to keep registering controls are simple and readable as possible, 
 $CB->addTextbox("name", "label textbox")->DefaultValue("this is the default value");
 $CB->addImageID("name2", "label image")->Description("This returns an ID, useful for responsive images");
 ```
-These argument functions are always added to the last added control.
+These argument functions are always added to the last added control. You can also use these functions like this:
+```php
+$CB->addTextbox("name", "label textbox");
+    $CB->DefaultValue("this is the default value");
+```
 
 ---
+
 ##Available controls and arguments
 The following controls are currently available:
 ```php
-$CB->addNumber( name, label );
+$CB->addNumber( $name, $label );
 $CB->addNote($label, $content = "" ); // for writing instructions or reminders inside the customizer
 $CB->addTextarea( $name, $label, $allowHTML = false );
 $CB->addImageID( $name, $label );
