@@ -6,7 +6,6 @@ A wrapper for $wp_customize that makes working with the WordPress customizer eas
 Always use the CustomizerBuilder (CB) inside the **customize_register** hook. This is the same place you normally register controls to the customizer. This hook is only used when opening the customizer in the WordPress backoffice, and will therefor not affect the performance of your website.
 
 ```php
-
 function CB_customize_register( $wp_customize )
 {
     require 'customizer-builder.php';
