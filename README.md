@@ -60,7 +60,7 @@ $textareaText = get_theme_mod("textarea1");
 ```
 
 ###Adding arguments to controls
-In an attempt to keep registering controls are simple and readable as possible, arguments to controls are added in the following way:
+In an attempt to keep registering controls as simple and readable as possible, arguments to controls are added in the following way:
 ```php
 $CB->addTextbox("name", "label textbox")->DefaultValue("this is the default value");
 $CB->addImageID("name2", "label image")->Description("This returns an ID, useful for responsive images");
