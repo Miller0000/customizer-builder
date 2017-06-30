@@ -1,9 +1,9 @@
 # WordPress Customizer Builder
-A wrapper for WP_Customize_Manager that makes working with the WordPress customizer easier
+The WordPress customizer requires a lot of lines of code to register a simple control. This wrapper aims to make registering controls as easy and readable as possible.
 
 ## Docs
 
-The CustomizerBuilder (CB) is made to be used in themes. Include it in ```functions.php```:
+The CustomizerBuilder (CB) is made to be used in themes. Include it in your theme's ```functions.php```:
 ```php
 require(get_template_directory() . '/customizer/customizer.php');
 ```
